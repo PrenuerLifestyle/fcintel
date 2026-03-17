@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Preview - fcintel</title>
-    <meta name="description" content="Preview dashboard (testing mode)">
+    <title>Dashboard - fcintel</title>
+    <meta name="description" content="Manage your cases and start a new recovery consultation">
 
-    <!-- Favicon (optional) -->
+    <!-- Favicon -->
     <link rel="shortcut icon" href="/assets/images/logoIcon/favicon.png" type="image/x-icon">
     <link rel="apple-touch-icon" href="/assets/images/logoIcon/my-logo.png">
 
@@ -20,7 +20,7 @@
     <!-- iziToast for notifications -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast@1.4.0/dist/css/iziToast.min.css">
 
-    <!-- Custom Dashboard Styles (same as before) -->
+    <!-- Custom Dashboard Styles -->
     <style>
         :root {
             --bg:       #080c10;
@@ -94,7 +94,7 @@
         .badge-recovered { background: #46e829; color: #000; }
         .badge-pending { background: #248acc; color: #fff; }
 
-        /* Spinner (hidden by default now) */
+        /* Spinner */
         #spinner {
             background: var(--bg);
             z-index: 9999;
@@ -103,7 +103,7 @@
             color: var(--primary) !important;
         }
 
-        /* Modal Styles (same) */
+        /* Modal Styles */
         .modal-content {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -223,39 +223,40 @@
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom border-secondary">
                     <h1 class="h2">Dashboard</h1>
                     <div class="d-flex align-items-center">
-                        <span id="userEmail" class="text-muted me-3">test@example.com (Preview Mode)</span>
+                        <span id="userEmail" class="text-muted me-3">Loading...</span>
+                        <span id="userRole" class="badge bg-primary d-none"></span>
                     </div>
                 </div>
 
-                <!-- Stats Cards (mock data) -->
+                <!-- Stats Cards -->
                 <div class="row g-4 mb-4" id="statsContainer">
                     <div class="col-sm-6 col-lg-3">
                         <div class="stat-card">
                             <h6 class="text-muted text-uppercase small">Total Cases</h6>
-                            <h2 class="text-white" id="totalCases">12</h2>
+                            <h2 class="text-white" id="totalCases">—</h2>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-3">
                         <div class="stat-card">
                             <h6 class="text-muted text-uppercase small">Open Cases</h6>
-                            <h2 class="text-white" id="openCases">5</h2>
+                            <h2 class="text-white" id="openCases">—</h2>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-3">
                         <div class="stat-card">
                             <h6 class="text-muted text-uppercase small">Recovered Amount</h6>
-                            <h2 class="text-white" id="recovered">$248,500</h2>
+                            <h2 class="text-white" id="recovered">—</h2>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-3">
                         <div class="stat-card">
                             <h6 class="text-muted text-uppercase small">Success Rate</h6>
-                            <h2 class="text-white" id="successRate">92%</h2>
+                            <h2 class="text-white" id="successRate">—</h2>
                         </div>
                     </div>
                 </div>
 
-                <!-- Recent Cases Table (mock data) -->
+                <!-- Recent Cases Table -->
                 <div class="stat-card p-3 mt-4">
                     <h5 class="mb-3">Recent Cases</h5>
                     <div class="table-responsive">
@@ -266,31 +267,12 @@
                                     <th>Type</th>
                                     <th>Status</th>
                                     <th>Date Submitted</th>
-                                    <th>Recovered Amount</th>
+                                    <th>Amount Lost</th>
+                                    <th>Recovered</th>
                                 </tr>
                             </thead>
                             <tbody id="casesTable">
-                                <tr>
-                                    <td>#FC101</td>
-                                    <td>Cryptocurrency</td>
-                                    <td><span class="badge badge-progress">In Progress</span></td>
-                                    <td>2025-02-10</td>
-                                    <td>—</td>
-                                </tr>
-                                <tr>
-                                    <td>#FC102</td>
-                                    <td>Account Compromise</td>
-                                    <td><span class="badge badge-recovered">Recovered</span></td>
-                                    <td>2025-01-28</td>
-                                    <td>$12,500</td>
-                                </tr>
-                                <tr>
-                                    <td>#FC103</td>
-                                    <td>Social Media</td>
-                                    <td><span class="badge badge-pending">Pending Review</span></td>
-                                    <td>2025-02-05</td>
-                                    <td>—</td>
-                                </tr>
+                                <tr><td colspan="6" class="text-center text-muted">Loading cases...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -299,7 +281,7 @@
         </div>
     </div>
 
-    <!-- ========== RECOVERY CONSULTATION MODALS (unchanged) ========== -->
+    <!-- RECOVERY CONSULTATION MODALS (keep your existing modals here) -->
     <!-- Step 1: Consultation Form Modal -->
     <div class="modal fade" id="recoveryModal" tabindex="-1" aria-labelledby="recoveryModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -433,64 +415,258 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/izitoast@1.4.0/dist/js/iziToast.min.js"></script>
 
-    <script>
-        // Simple script to handle the recovery modals (no Firebase)
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+        import { 
+            getFirestore, 
+            collection, 
+            query, 
+            where, 
+            orderBy, 
+            onSnapshot,
+            doc,
+            getDoc
+        } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDLavOembi_2egjQcshysiWqKZOwMka9aI",
+            authDomain: "fcintel-1fa8c.firebaseapp.com",
+            projectId: "fcintel-1fa8c",
+            storageBucket: "fcintel-1fa8c.firebasestorage.app",
+            messagingSenderId: "715533638753",
+            appId: "1:715533638753:web:491d17796c411ecab9de20"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const spinner = document.getElementById('spinner');
+        const userEmailSpan = document.getElementById('userEmail');
+        const userRoleSpan = document.getElementById('userRole');
+        const totalCasesEl = document.getElementById('totalCases');
+        const openCasesEl = document.getElementById('openCases');
+        const recoveredEl = document.getElementById('recovered');
+        const successRateEl = document.getElementById('successRate');
+        const casesTableBody = document.getElementById('casesTable');
+        const signOutBtn = document.getElementById('signOutBtn');
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', { 
+                style: 'currency', 
+                currency: 'USD',
+                minimumFractionDigits: 0 
+            }).format(amount || 0);
+        }
+
+        function showToast(type, message) {
+            iziToast[type]({
+                title: type === 'error' ? 'Error' : 'Success',
+                message: message,
+                position: 'topRight',
+                timeout: 3000
+            });
+        }
+
+        // Load mock data for preview
+        function loadMockData() {
+            userEmailSpan.textContent = 'preview@fcintel.com (Preview Mode)';
+            totalCasesEl.textContent = '12';
+            openCasesEl.textContent = '5';
+            recoveredEl.textContent = '$248,500';
+            successRateEl.textContent = '92%';
+            casesTableBody.innerHTML = `
+                <tr>
+                    <td>#FC101</td>
+                    <td>Cryptocurrency</td>
+                    <td><span class="badge badge-progress">In Progress</span></td>
+                    <td>2025-02-10</td>
+                    <td>$50,000</td>
+                    <td>—</td>
+                </tr>
+                <tr>
+                    <td>#FC102</td>
+                    <td>Account Compromise</td>
+                    <td><span class="badge badge-recovered">Recovered</span></td>
+                    <td>2025-01-28</td>
+                    <td>$15,000</td>
+                    <td>$12,500</td>
+                </tr>
+                <tr>
+                    <td>#FC103</td>
+                    <td>Social Media</td>
+                    <td><span class="badge badge-pending">Pending Review</span></td>
+                    <td>2025-02-05</td>
+                    <td>$8,000</td>
+                    <td>—</td>
+                </tr>
+            `;
+            spinner.classList.add('d-none');
+        }
+
+        // Listen to real cases from Firestore
+        function listenToUserCases(userId) {
+            const casesRef = collection(db, 'cases');
+            const q = query(
+                casesRef, 
+                where('userId', '==', userId),
+                orderBy('submittedAt', 'desc')
+            );
+
+            return onSnapshot(q, (snapshot) => {
+                const cases = [];
+                let totalRecovered = 0;
+                let recoveredCount = 0;
+
+                snapshot.forEach((doc) => {
+                    const caseData = { id: doc.id, ...doc.data() };
+                    cases.push(caseData);
+                    
+                    if (caseData.status === 'recovered') {
+                        totalRecovered += caseData.recoveredAmount || 0;
+                        recoveredCount++;
+                    }
+                });
+
+                const total = cases.length;
+                const open = cases.filter(c => c.status === 'pending' || c.status === 'in-progress').length;
+                
+                totalCasesEl.textContent = total;
+                openCasesEl.textContent = open;
+                recoveredEl.textContent = formatCurrency(totalRecovered);
+                successRateEl.textContent = total ? Math.round((recoveredCount / total) * 100) + '%' : '0%';
+
+                if (total === 0) {
+                    casesTableBody.innerHTML = `<tr><td colspan="6" class="text-center text-muted">No cases yet. <a href="contact.html" class="text-primary">Submit a case</a></td></tr>`;
+                } else {
+                    let rows = '';
+                    cases.slice(0, 5).forEach(c => {
+                        const statusClass = c.status === 'recovered' ? 'badge-recovered' : 
+                                           (c.status === 'in-progress' ? 'badge-progress' : 'badge-pending');
+                        const statusText = c.status ? c.status.toUpperCase() : 'PENDING';
+                        const date = c.submittedAt?.toDate().toLocaleDateString() || 'N/A';
+                        
+                        rows += `<tr>
+                            <td>#${c.id.slice(-6)}</td>
+                            <td>${c.scamType || 'N/A'}</td>
+                            <td><span class="badge ${statusClass}">${statusText}</span></td>
+                            <td>${date}</td>
+                            <td>${formatCurrency(c.amountLost || 0)}</td>
+                            <td>${c.recoveredAmount ? formatCurrency(c.recoveredAmount) : '—'}</td>
+                        </tr>`;
+                    });
+                    casesTableBody.innerHTML = rows;
+                }
+                spinner.classList.add('d-none');
+            }, (error) => {
+                console.error('Error loading cases:', error);
+                loadMockData(); // Fallback to mock data on error
+            });
+        }
+
+        // Auth state observer
+        onAuthStateChanged(auth, async (user) => {
+            spinner.classList.remove('d-none');
+            spinner.classList.add('d-flex');
+
+            if (!user) {
+                // No user logged in - show preview mode
+                loadMockData();
+                
+                // Update sign out button for preview mode
+                signOutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    alert('Preview mode - no sign out needed');
+                });
+                return;
+            }
+
+            // User is logged in - show real data
+            userEmailSpan.textContent = user.email;
+
+            try {
+                // Get user role from Firestore
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    userRoleSpan.textContent = userData.role || 'client';
+                    userRoleSpan.classList.remove('d-none');
+                }
+
+                // Listen to user's cases
+                const unsubscribe = listenToUserCases(user.uid);
+                window.addEventListener('beforeunload', () => unsubscribe());
+
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                loadMockData(); // Fallback to mock data on error
+            }
+        });
+
+        // Sign out
+        signOutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            signOut(auth).then(() => {
+                window.location.replace('login.html');
+            }).catch((error) => {
+                showToast('error', 'Sign out failed: ' + error.message);
+            });
+        });
+
+        // Recovery modal script (keep your existing modal code)
         (function() {
-            // Get modal elements
             const recoveryModal = new bootstrap.Modal(document.getElementById('recoveryModal'));
             const processingModal = new bootstrap.Modal(document.getElementById('processingModal'));
             const resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
             const feeModal = new bootstrap.Modal(document.getElementById('feeModal'));
             const successToast = new bootstrap.Toast(document.getElementById('successToast'));
 
-            // Buttons
             const startEvalBtn = document.getElementById('startEvaluationBtn');
             const proceedToFeeBtn = document.getElementById('proceedToFeeBtn');
             const confirmFeeBtn = document.getElementById('confirmFeeBtn');
 
-            // Form fields
             const lostAmountInput = document.getElementById('lostAmount');
             const recoveredSpan = document.getElementById('recoveredAmountDisplay');
             const feeSpan = document.getElementById('feeAmountDisplay');
 
-            // Sign out button (just logs to console in preview mode)
-            document.getElementById('signOutBtn').addEventListener('click', (e) => {
-                e.preventDefault();
-                alert('Sign out clicked – no action in preview mode.');
-            });
-
             let lostAmount = 0, recovered = 0, fee = 0;
 
-            startEvalBtn.addEventListener('click', () => {
-                lostAmount = parseFloat(lostAmountInput.value);
-                if (isNaN(lostAmount) || lostAmount <= 0) {
-                    alert('Please enter a valid amount.');
-                    return;
-                }
+            if (startEvalBtn) {
+                startEvalBtn.addEventListener('click', () => {
+                    lostAmount = parseFloat(lostAmountInput.value);
+                    if (isNaN(lostAmount) || lostAmount <= 0) {
+                        alert('Please enter a valid amount.');
+                        return;
+                    }
+                    recoveryModal.hide();
+                    processingModal.show();
+                    setTimeout(() => {
+                        processingModal.hide();
+                        recovered = lostAmount * 0.8;
+                        recoveredSpan.innerText = '$' + recovered.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                        resultModal.show();
+                    }, 2000);
+                });
+            }
 
-                recoveryModal.hide();
-                processingModal.show();
+            if (proceedToFeeBtn) {
+                proceedToFeeBtn.addEventListener('click', () => {
+                    resultModal.hide();
+                    fee = recovered * 0.08;
+                    feeSpan.innerText = '$' + fee.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                    feeModal.show();
+                });
+            }
 
-                setTimeout(() => {
-                    processingModal.hide();
-                    recovered = lostAmount * 0.8;
-                    recoveredSpan.innerText = '$' + recovered.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-                    resultModal.show();
-                }, 2000);
-            });
-
-            proceedToFeeBtn.addEventListener('click', () => {
-                resultModal.hide();
-                fee = recovered * 0.08;
-                feeSpan.innerText = '$' + fee.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-                feeModal.show();
-            });
-
-            confirmFeeBtn.addEventListener('click', () => {
-                feeModal.hide();
-                successToast.show();
-                document.getElementById('consultationForm').reset();
-            });
+            if (confirmFeeBtn) {
+                confirmFeeBtn.addEventListener('click', () => {
+                    feeModal.hide();
+                    successToast.show();
+                    document.getElementById('consultationForm')?.reset();
+                });
+            }
         })();
     </script>
 </body>

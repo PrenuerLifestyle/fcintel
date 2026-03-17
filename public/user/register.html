@@ -14,13 +14,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
-    <!-- Bootstrap 5 (for layout, but we override with custom styles) -->
+    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- iziToast for notifications -->
+    <!-- iziToast -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast@1.4.0/dist/css/iziToast.min.css">
 
-    <!-- Custom Styles (exactly as login.html) -->
     <style>
         :root {
             --bg:       #080c10;
@@ -86,10 +85,6 @@
             background: var(--card);
             color: #fff;
         }
-        .form-control::placeholder {
-            color: #4a5568;
-            opacity: 1;
-        }
         .btn-primary {
             background: var(--primary);
             border: none;
@@ -103,21 +98,11 @@
             background: #1a7ab5;
             transform: translateY(-2px);
         }
-        .btn-link {
-            color: var(--muted);
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: color 0.2s;
-        }
-        .btn-link:hover {
-            color: #fff;
-        }
         .footer-links {
             margin-top: 1.5rem;
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-wrap: wrap;
             gap: 0.5rem;
         }
         .signin-link {
@@ -128,7 +113,6 @@
         .signin-link:hover {
             text-decoration: underline;
         }
-        /* Spinner overlay */
         #spinner {
             background: rgba(8,12,16,0.9);
             z-index: 9999;
@@ -136,7 +120,6 @@
     </style>
 </head>
 <body>
-    <!-- Spinner (hidden by default) -->
     <div id="spinner" class="position-fixed top-0 start-0 w-100 vh-100 d-none align-items-center justify-content-center">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
             <span class="visually-hidden">Loading...</span>
@@ -159,8 +142,8 @@
                 <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
             </div>
             <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" placeholder="johndoe123" required>
+                <label for="phone" class="form-label">Phone Number</label>
+                <input type="tel" class="form-control" id="phone" placeholder="+1234567890" required>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
@@ -180,39 +163,31 @@
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/izitoast@1.4.0/dist/js/iziToast.min.js"></script>
 
-    <!-- Firebase Modular -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDLavOembi_2egjQcshysiWqKZOwMka9aI",
             authDomain: "fcintel-1fa8c.firebaseapp.com",
             projectId: "fcintel-1fa8c",
-            storageBucket: "fcintel-1fa8c.appspot.com",
+            storageBucket: "fcintel-1fa8c.firebasestorage.app",
             messagingSenderId: "715533638753",
             appId: "1:715533638753:web:491d17796c411ecab9de20"
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getFirestore(app);
 
-        // DOM elements
         const spinner = document.getElementById('spinner');
         const registerForm = document.getElementById('registerForm');
-        const nameInput = document.getElementById('name');
-        const emailInput = document.getElementById('email');
-        const usernameInput = document.getElementById('username');
-        const passwordInput = document.getElementById('password');
-        const confirmInput = document.getElementById('password_confirmation');
-        const registerBtn = document.getElementById('registerBtn');
 
-        // Helper: show toast
         function showToast(type, message) {
             iziToast[type]({
                 title: type === 'error' ? 'Error' : 'Success',
@@ -225,14 +200,13 @@
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const name = nameInput.value.trim();
-            const email = emailInput.value.trim();
-            const username = usernameInput.value.trim();
-            const password = passwordInput.value.trim();
-            const confirm = confirmInput.value.trim();
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const confirm = document.getElementById('password_confirmation').value.trim();
 
-            // Basic validation
-            if (!name || !email || !username || !password || !confirm) {
+            if (!name || !email || !phone || !password || !confirm) {
                 showToast('error', 'All fields are required.');
                 return;
             }
@@ -245,20 +219,33 @@
                 return;
             }
 
-            // Show spinner
             spinner.classList.remove('d-none');
             spinner.classList.add('d-flex');
-            registerBtn.disabled = true;
+            registerForm.querySelector('button[type="submit"]').disabled = true;
 
             try {
-                // Create user
+                // Create user in Firebase Auth
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // Update profile with display name (you can also store username in Firestore later)
+                // Update profile with display name
                 await updateProfile(user, { displayName: name });
 
-                // Success
+                // Create user document in Firestore using UID as document ID
+                await setDoc(doc(db, "users", user.uid), {
+                    email: email,
+                    displayName: name,
+                    phone: phone,
+                    createdAt: serverTimestamp(),
+                    lastLogin: serverTimestamp(),
+                    role: "client",
+                    preferences: {
+                        notifications: true,
+                        language: "en",
+                        theme: "dark"
+                    }
+                });
+
                 showToast('success', 'Account created! Redirecting to login...');
                 setTimeout(() => {
                     window.location.href = 'login.html';
@@ -277,16 +264,8 @@
             } finally {
                 spinner.classList.add('d-none');
                 spinner.classList.remove('d-flex');
-                registerBtn.disabled = false;
+                registerForm.querySelector('button[type="submit"]').disabled = false;
             }
-        });
-
-        // Hide spinner on page load (fallback)
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                spinner.classList.add('d-none');
-                spinner.classList.remove('d-flex');
-            }, 2000);
         });
     </script>
 </body>
