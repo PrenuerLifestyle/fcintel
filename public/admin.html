@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin — fcintel</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css">
+<style>
+:root{--bg:#080c10;--surface:#0f1419;--card:#141920;--border:rgba(255,255,255,0.07);--primary:#248acc;--accent:#46e829;--muted:#64748b}
+*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:#e2e8f0;font-family:'DM Sans',sans-serif}a{text-decoration:none;color:inherit}
+.wrap{max-width:1100px;margin:0 auto;padding:40px 20px}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:36px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.title{font-family:'Outfit',sans-serif;font-size:1.3rem;font-weight:800}.title span{color:#e53e3e}
+.badge{background:rgba(229,62,62,0.12);border:1px solid rgba(229,62,62,0.3);color:#e53e3e;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;padding:4px 12px;border-radius:20px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+.stat .val{font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:800}
+.stat .lbl{font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px}
+.panel{background:#161920;border:1px solid var(--border);border-radius:12px;padding:28px;margin-bottom:20px}
+.panel-title{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;gap:8px}
+.panel-title i{color:var(--primary)}
+label{font-size:0.78rem;color:#9ca3af;margin-bottom:6px;display:block}
+.inp{background:rgba(255,255,255,0.04)!important;border:1px solid rgba(255,255,255,0.1)!important;color:#e2e8f0!important;border-radius:8px!important;padding:10px 14px;width:100%;font-family:inherit;font-size:0.9rem;outline:none}
+.inp:focus{border-color:rgba(36,138,204,0.5)!important;box-shadow:0 0 0 3px rgba(36,138,204,0.1)}
+select.inp option{background:#161920}
+textarea.inp{min-height:100px;resize:vertical}
+.char{font-size:0.7rem;color:#4b5563;text-align:right;margin-top:4px}
+.preview-box{background:#1e2128;border:1px solid var(--border);border-radius:12px;padding:16px;display:flex;gap:12px;align-items:flex-start;margin-bottom:20px}
+.preview-icon{width:44px;height:44px;border-radius:10px;background:rgba(36,138,204,0.2);display:flex;align-items:center;justify-content:center;color:var(--primary);flex-shrink:0;font-size:1.1rem}
+.prev-title{font-weight:700;font-size:0.9rem;margin-bottom:3px}
+.prev-body{font-size:0.8rem;color:#9ca3af;line-height:1.5}
+.prev-meta{font-size:0.7rem;color:#4b5563;margin-top:5px}
+.prev-empty{color:#4b5563;font-size:0.82rem;font-style:italic}
+.btn-send{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:13px;font-size:0.9rem;font-weight:700;cursor:pointer;width:100%;transition:background 0.2s}
+.btn-send:hover{background:#1a7ab5}.btn-send:disabled{opacity:0.5;cursor:not-allowed}
+.topic-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:8px;background:rgba(255,255,255,0.02);margin-bottom:6px}
+.topic-name{font-size:0.85rem;font-weight:600}.topic-subs{font-size:0.72rem;color:var(--muted)}
+.btn-del{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#ef4444;border-radius:6px;padding:4px 10px;font-size:0.72rem;cursor:pointer}
+.btn-add{background:rgba(36,138,204,0.1);border:1px solid rgba(36,138,204,0.2);color:var(--primary);border-radius:6px;padding:8px 14px;font-size:0.72rem;cursor:pointer}
+.hist-table{width:100%;border-collapse:collapse;font-size:0.82rem}
+.hist-table th{text-align:left;padding:10px 14px;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);border-bottom:1px solid var(--border)}
+.hist-table td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.04)}
+.pill-sent{background:rgba(70,232,41,0.1);color:#46e829;font-size:0.65rem;padding:2px 8px;border-radius:10px;font-weight:600}
+.grid2{display:grid;grid-template-columns:3fr 2fr;gap:20px}
+.mb{margin-bottom:16px}
+@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div>
+      <div class="title">fcintel <span>Admin</span></div>
+      <div style="font-size:0.78rem;color:var(--muted);margin-top:3px">Notification Management Panel</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <span class="badge"><i class="fas fa-shield-alt"></i> Admin Only</span>
+      <a href="index.html" style="color:var(--muted);font-size:0.8rem"><i class="fas fa-external-link-alt"></i> View Site</a>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="val" style="color:var(--primary)" id="sSent">0</div><div class="lbl">Sent</div></div>
+    <div class="stat"><div class="val" style="color:#46e829" id="sUsers">0</div><div class="lbl">Users</div></div>
+    <div class="stat"><div class="val" style="color:#fbbf24" id="sTopics">5</div><div class="lbl">Topics</div></div>
+    <div class="stat"><div class="val" style="color:#c084fc">98%</div><div class="lbl">Delivery</div></div>
+  </div>
+
+  <div class="grid2">
+    <div>
+      <div class="panel">
+        <div class="panel-title"><i class="fas fa-paper-plane"></i> Send Notification</div>
+        <div class="mb">
+          <label>Target Topic</label>
+          <select class="inp" id="topicSel" onchange="updatePreview()">
+            <option value="">All Users (broadcast)</option>
+            <option>General Announcements</option>
+            <option>Case Updates</option>
+            <option>Product Updates</option>
+            <option>Security Alerts</option>
+            <option>Recovery Tips</option>
+          </select>
+        </div>
+        <div class="mb">
+          <label>Title <span style="color:#ef4444">*</span></label>
+          <input type="text" class="inp" id="nTitle" maxlength="65" placeholder="Notification title..." oninput="updatePreview();cc('nTitle','cc1',65)">
+          <div class="char" id="cc1">0/65</div>
+        </div>
+        <div class="mb">
+          <label>Message <span style="color:#ef4444">*</span></label>
+          <textarea class="inp" id="nBody" maxlength="200" placeholder="Write your message..." oninput="updatePreview();cc('nBody','cc2',200)"></textarea>
+          <div class="char" id="cc2">0/200</div>
+        </div>
+        <label>Preview</label>
+        <div class="preview-box" id="preview">
+          <div class="preview-icon"><i class="fas fa-bell"></i></div>
+          <div class="prev-empty">Start typing to preview...</div>
+        </div>
+        <button class="btn-send" id="sendBtn" onclick="sendNotif()"><i class="fas fa-paper-plane"></i> &nbsp;Send Notification</button>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel mb" style="margin-bottom:20px">
+        <div class="panel-title"><i class="fas fa-tags"></i> Topics</div>
+        <div id="topicMgr">
+          <div class="topic-row"><div><div class="topic-name">General Announcements</div><div class="topic-subs">2 subscribers</div></div><button class="btn-del" onclick="this.closest('.topic-row').remove()">Delete</button></div>
+          <div class="topic-row"><div><div class="topic-name">Case Updates</div><div class="topic-subs">1 subscriber</div></div><button class="btn-del" onclick="this.closest('.topic-row').remove()">Delete</button></div>
+          <div class="topic-row"><div><div class="topic-name">Product Updates</div><div class="topic-subs">1 subscriber</div></div><button class="btn-del" onclick="this.closest('.topic-row').remove()">Delete</button></div>
+          <div class="topic-row"><div><div class="topic-name">Security Alerts</div><div class="topic-subs">0 subscribers</div></div><button class="btn-del" onclick="this.closest('.topic-row').remove()">Delete</button></div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:14px">
+          <input type="text" class="inp" id="newTopic" placeholder="New topic name..." style="flex:1">
+          <button class="btn-add" onclick="addTopic()">Add</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title"><i class="fas fa-history"></i> Recent Sent</div>
+        <table class="hist-table">
+          <thead><tr><th>Title</th><th>Topic</th><th>Status</th></tr></thead>
+          <tbody id="histBody">
+            <tr><td>Welcome to fcintel!</td><td style="color:var(--muted)">General</td><td><span class="pill-sent">Sent</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+const app=initializeApp({apiKey:"AIzaSyDLavOembi_2egjQcshysiWqKZOwMka9aI",authDomain:"fcintel-1fa8c.firebaseapp.com",projectId:"fcintel-1fa8c",storageBucket:"fcintel-1fa8c.firebasestorage.app",messagingSenderId:"715533638753",appId:"1:715533638753:web:491d17796c411ecab9de20"});
+const auth=getAuth(app);
+onAuthStateChanged(auth,async user=>{
+  if(!user){location.href='user/login.html';return;}
+  const tok=await user.getIdTokenResult();
+  if(!tok.claims.admin){alert('Admin access only.');location.href='index.html';}
+});
+</script>
+<script>
+function cc(iId,cId,max){const l=document.getElementById(iId).value.length;const el=document.getElementById(cId);el.textContent=l+'/'+max;el.style.color=l>=max?'#ef4444':l>max*0.85?'#f59e0b':'#4b5563';}
+function updatePreview(){
+  const t=document.getElementById('nTitle').value;
+  const b=document.getElementById('nBody').value;
+  const topic=document.getElementById('topicSel').options[document.getElementById('topicSel').selectedIndex].text;
+  const p=document.getElementById('preview');
+  if(!t&&!b){p.innerHTML='<div class="preview-icon"><i class="fas fa-bell"></i></div><div class="prev-empty">Start typing to preview...</div>';return;}
+  p.innerHTML=`<div class="preview-icon"><i class="fas fa-bell"></i></div><div><div class="prev-title">${t||'...'}</div><div class="prev-body">${b||'...'}</div><div class="prev-meta">${topic} · just now</div></div>`;
+}
+function sendNotif(){
+  const t=document.getElementById('nTitle').value.trim();
+  const b=document.getElementById('nBody').value.trim();
+  if(!t||!b){alert('Title and body required.');return;}
+  const btn=document.getElementById('sendBtn');
+  btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Sending...';
+  setTimeout(()=>{
+    const topic=document.getElementById('topicSel').options[document.getElementById('topicSel').selectedIndex].text;
+    const row=document.createElement('tr');
+    row.innerHTML=`<td>${t.substring(0,28)}${t.length>28?'...':''}</td><td style="color:var(--muted)">${topic.split(' ')[0]}</td><td><span class="pill-sent">Sent</span></td>`;
+    document.getElementById('histBody').insertBefore(row,document.getElementById('histBody').firstChild);
+    const s=document.getElementById('sSent');s.textContent=parseInt(s.textContent)+1;
+    document.getElementById('nTitle').value='';document.getElementById('nBody').value='';
+    document.getElementById('cc1').textContent='0/65';document.getElementById('cc2').textContent='0/200';
+    updatePreview();btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> &nbsp;Send Notification';
+    alert('Notification sent to: '+topic);
+  },1500);
+}
+function addTopic(){
+  const n=document.getElementById('newTopic').value.trim();if(!n)return;
+  const div=document.createElement('div');div.className='topic-row';
+  div.innerHTML=`<div><div class="topic-name">${n}</div><div class="topic-subs">0 subscribers</div></div><button class="btn-del" onclick="this.closest('.topic-row').remove()">Delete</button>`;
+  document.getElementById('topicMgr').appendChild(div);
+  const sel=document.getElementById('topicSel');const opt=document.createElement('option');opt.textContent=n;sel.appendChild(opt);
+  document.getElementById('newTopic').value='';
+  const s=document.getElementById('sTopics');s.textContent=parseInt(s.textContent)+1;
+}
+</script>
+</body>
+</html>
+

@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phone Unlock Service — fcintel</title>
+<meta name="description" content="Professional phone unlocking for forensic investigations, data recovery and legal access. Fast, secure and confidential.">
+<link rel="shortcut icon" href="assets/images/logoIcon/favicon.png">
+<link rel="apple-touch-icon" href="assets/images/logoIcon/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css">
+<style>
+/* === SAME STYLES AS INDEX === */
+:root {
+  --bg:       #080c10;
+  --surface:  #0f1419;
+  --card:     #141920;
+  --border:   rgba(255,255,255,0.07);
+  --primary:  #248acc;
+  --accent:   #46e829;
+  --text:     #e2e8f0;
+  --muted:    #64748b;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; }
+
+/* ── NAVBAR (exact same) ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 68px;
+  background: rgba(8,12,16,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.3s;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800; font-size: 1.15rem; color: #fff;
+}
+.nav-logo img { height: 32px; }
+.nav-logo span { color: var(--primary); }
+.nav-links { display: flex; align-items: center; gap: 6px; }
+.nav-links a {
+  padding: 7px 14px; border-radius: 6px;
+  font-size: 0.875rem; color: var(--muted);
+  transition: color 0.2s, background 0.2s;
+  position: relative;
+}
+.nav-links a:hover { color: #fff; background: rgba(255,255,255,0.05); }
+.nav-links .has-dropdown { cursor: pointer; }
+.dropdown {
+  display: none; position: absolute; top: calc(100% + 8px); left: 0;
+  background: #161c24; border: 1px solid var(--border);
+  border-radius: 10px; padding: 8px; min-width: 220px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+}
+.has-dropdown:hover .dropdown { display: block; }
+.dropdown a {
+  display: block; padding: 9px 12px; border-radius: 6px;
+  font-size: 0.82rem; color: var(--muted);
+  transition: all 0.15s;
+}
+.dropdown a:hover { color: #fff; background: rgba(255,255,255,0.05); }
+.nav-actions { display: flex; gap: 10px; align-items: center; }
+.btn-login {
+  padding: 8px 18px; border-radius: 7px;
+  border: 1px solid var(--border);
+  color: var(--muted); font-size: 0.85rem;
+  transition: all 0.2s;
+}
+.btn-login:hover { border-color: rgba(255,255,255,0.2); color: #fff; }
+.btn-cta {
+  padding: 8px 18px; border-radius: 7px;
+  background: var(--primary); color: #fff;
+  font-size: 0.85rem; font-weight: 600;
+  transition: background 0.2s;
+}
+.btn-cta:hover { background: #1a7ab5; }
+.nav-toggle {
+  display: none; background: none; border: none;
+  color: #fff; font-size: 1.2rem; cursor: pointer;
+}
+
+/* ── PAGE HERO (inner) ── */
+.page-hero {
+  min-height: 40vh;
+  display: flex; align-items: center;
+  padding: 100px 40px 60px;
+  position: relative; overflow: hidden;
+}
+.page-hero .hero-bg,
+.page-hero .hero-grid { position: absolute; inset: 0; z-index: 0; }
+.page-hero .hero-bg {
+  background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(36,138,204,0.18) 0%, transparent 70%);
+}
+.page-hero .hero-grid {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+}
+.page-hero .hero-content {
+  position: relative; z-index: 1;
+  max-width: 800px;
+  animation: fadeUp 0.8s ease both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page-hero h1 {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  font-weight: 900; line-height: 1.08;
+  letter-spacing: -0.03em; margin-bottom: 22px;
+}
+.page-hero .hero-sub {
+  font-size: 1.05rem; color: var(--muted); max-width: 620px;
+  line-height: 1.75; margin-bottom: 38px;
+}
+
+/* ── SECTION COMMONS ── */
+section { padding: 96px 40px; }
+.container { max-width: 1100px; margin: 0 auto; }
+.section-label {
+  display: inline-block;
+  color: var(--primary); font-size: 0.72rem;
+  text-transform: uppercase; letter-spacing: 0.15em;
+  margin-bottom: 10px;
+}
+h2 {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 800; line-height: 1.15;
+  letter-spacing: -0.025em; margin-bottom: 14px;
+}
+.section-sub { color: var(--muted); font-size: 1rem; max-width: 520px; line-height: 1.7; }
+
+/* ── SERVICE DETAIL CONTENT ── */
+.service-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+  margin-top: 52px;
+}
+.service-features {
+  list-style: none;
+}
+.service-features li {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 24px;
+  align-items: flex-start;
+}
+.service-features li i {
+  width: 26px;
+  color: var(--accent);
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.service-features li strong {
+  font-weight: 600;
+  color: #fff;
+}
+.service-features li p {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.service-visual {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.service-visual::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(36,138,204,0.15), transparent 70%);
+}
+
+/* ── PROCESS STEPS ── */
+.process-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  margin-top: 48px;
+}
+.process-step {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px;
+  text-align: center;
+  transition: transform 0.3s;
+}
+.process-step:hover {
+  transform: translateY(-4px);
+  border-color: rgba(36,138,204,0.35);
+}
+.process-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(36,138,204,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--primary);
+  margin: 0 auto 20px;
+}
+.process-step h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.process-step p {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ── FOOTER (same) ── */
+footer {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 60px 40px 32px;
+}
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+.footer-brand p { font-size: 0.83rem; color: var(--muted); line-height: 1.7; margin-top: 12px; max-width: 260px; }
+.footer-col h4 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 16px; }
+.footer-col a { display: block; font-size: 0.83rem; color: var(--muted); margin-bottom: 9px; transition: color 0.2s; }
+.footer-col a:hover { color: #fff; }
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 24px; border-top: 1px solid var(--border);
+  font-size: 0.78rem; color: var(--muted); flex-wrap: wrap; gap: 10px;
+}
+
+/* ── MOBILE NAV ── */
+.mobile-menu {
+  display: none; flex-direction: column;
+  position: fixed; top: 68px; left: 0; right: 0;
+  background: rgba(8,12,16,0.97); backdrop-filter: blur(12px);
+  padding: 20px; z-index: 999;
+  border-bottom: 1px solid var(--border);
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  padding: 12px 10px; font-size: 0.95rem; color: var(--muted);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: color 0.2s;
+}
+.mobile-menu a:hover { color: #fff; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  nav { padding: 0 20px; }
+  .nav-links, .nav-actions { display: none; }
+  .nav-toggle { display: block; }
+  .page-hero { padding: 90px 20px 50px; }
+  section { padding: 64px 20px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .service-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .footer-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV (identical to index) ── -->
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/images/logoIcon/logo.png" alt="fcintel" onerror="this.style.display='none'">
+    fc<span>intel</span>
+  </a>
+
+  <div class="nav-links">
+    <a href="about.html">About</a>
+    <a href="#services" class="has-dropdown" style="position:relative">
+      Services
+      <div class="dropdown">
+        <a href="cryptocurrency-recovery.html"><i class="fab fa-bitcoin" style="width:18px"></i> Cryptocurrency Recovery</a>
+        <a href="account-restoration.html"><i class="fas fa-user-shield" style="width:18px"></i> Account Restoration</a>
+        <a href="social-media-intrusion-recovery.html"><i class="fas fa-share-alt" style="width:18px"></i> Social Media Recovery</a>
+        <a href="device-forensics.html"><i class="fas fa-mobile-alt" style="width:18px"></i> Device Forensics</a>
+        <a href="digital-extortion-response.html"><i class="fas fa-lock" style="width:18px"></i> Digital Extortion</a>
+        <a href="account-compromise-recovery.html"><i class="fas fa-key" style="width:18px"></i> Account Compromise</a>
+      </div>
+    </a>
+    <a href="testimonial.html">Testimonials</a>
+    <a href="news-insights.html">News</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <div class="nav-actions">
+    <a href="user/login.html" class="btn-login" id="navLogin">Login</a>
+    <a href="user/register.html" class="btn-cta" id="navRegister">Get Started</a>
+  </div>
+
+  <button class="nav-toggle" onclick="document.querySelector('.mobile-menu').classList.toggle('open')">
+    <i class="fas fa-bars"></i>
+  </button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu">
+  <a href="about.html">About</a>
+  <a href="cryptocurrency-recovery.html">Cryptocurrency Recovery</a>
+  <a href="account-restoration.html">Account Restoration</a>
+  <a href="social-media-intrusion-recovery.html">Social Media Recovery</a>
+  <a href="device-forensics.html">Device Forensics</a>
+  <a href="digital-extortion-response.html">Digital Extortion</a>
+  <a href="testimonial.html">Testimonials</a>
+  <a href="news-insights.html">News & Insights</a>
+  <a href="contact.html">Contact</a>
+  <a href="user/login.html" style="color:var(--primary);font-weight:600">Login</a>
+  <a href="user/register.html" style="color:var(--accent);font-weight:600">Get Started</a>
+</div>
+
+<!-- ── PAGE HERO ── -->
+<section class="page-hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <h1>Phone Unlock Service</h1>
+    <p class="hero-sub">Professional unlocking for forensic investigations, data recovery, and legal access. Fast, secure, and fully confidential.</p>
+  </div>
+</section>
+
+<!-- ── SERVICE OVERVIEW ── -->
+<section>
+  <div class="container">
+    <div class="service-grid">
+      <div>
+        <div class="section-label">Expert Service</div>
+        <h2>Unlock any device,<br>preserve the evidence</h2>
+        <p class="section-sub" style="margin-bottom: 24px;">We specialise in legally compliant phone unlocking for forensic analysis, data extraction and account recovery. Our methods preserve the integrity of evidence for legal proceedings.</p>
+        <ul class="service-features">
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <div>
+              <strong>All major brands & OS</strong>
+              <p>iPhone, Samsung, Google Pixel, Huawei and more – including latest models and firmware.</p>
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <div>
+              <strong>Forensic‑grade tools</strong>
+              <p>We use industry‑standard tools (Cellebrite, Oxygen, etc.) to ensure data is preserved intact.</p>
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <div>
+              <strong>Chain of custody</strong>
+              <p>Full documentation suitable for law enforcement and court admissibility.</p>
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <div>
+              <strong>Confidential & secure</strong>
+              <p>Your data is handled with the highest level of confidentiality and encryption.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="service-visual">
+        <div style="display:flex; gap:20px; align-items:center; margin-bottom:24px;">
+          <i class="fas fa-mobile-alt" style="font-size:3rem; color:var(--primary);"></i>
+          <i class="fas fa-lock-open" style="font-size:2rem; color:var(--accent);"></i>
+        </div>
+        <p style="color:var(--muted); margin-bottom:16px;">Unlock success rate</p>
+        <div class="progress-item">
+          <div class="progress-label"><span>iPhones</span><span>96%</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:96%"></div></div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-label"><span>Samsung/Android</span><span>98%</span></div>
+          <div class="progress-bar"><div class="progress-fill green" style="width:98%"></div></div>
+        </div>
+        <div style="margin-top:28px; display:flex; justify-content:space-between;">
+          <div><span style="color:#fff; font-weight:800;">24h</span><br><span style="font-size:0.7rem;">avg. turnaround</span></div>
+          <div><span style="color:#fff; font-weight:800;">1,200+</span><br><span style="font-size:0.7rem;">devices unlocked</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section style="background: var(--surface);">
+  <div class="container">
+    <div class="section-label">The Process</div>
+    <h2>How phone unlocking works</h2>
+    <p class="section-sub">A straightforward, secure process from submission to delivery.</p>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="process-icon"><i class="fas fa-file-alt"></i></div>
+        <h3>1. Submit request</h3>
+        <p>Provide device details and proof of ownership or legal authorisation.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-icon"><i class="fas fa-microchip"></i></div>
+        <h3>2. Technical analysis</h3>
+        <p>We analyse the device model and choose the safest unlocking method.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-icon"><i class="fas fa-unlock-alt"></i></div>
+        <h3>3. Unlock & verify</h3>
+        <p>Unlock performed; functionality and data integrity are verified.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-icon"><i class="fas fa-file-export"></i></div>
+        <h3>4. Handover & report</h3>
+        <p>You receive the unlocked device and a detailed forensic report (if required).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-section" style="background: linear-gradient(135deg, rgba(36,138,204,0.12) 0%, rgba(70,232,41,0.06) 100%); border-top:1px solid var(--border); border-bottom:1px solid var(--border); text-align:center; padding:96px 40px;">
+  <div class="container">
+    <h2 style="font-size:clamp(1.8rem,3vw,2.4rem); margin-bottom:14px;">Ready to unlock a device?</h2>
+    <p style="color:var(--muted); font-size:1rem; margin-bottom:32px;">Get in touch – we’re available 24/7 for urgent requests.</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <a href="contact.html" class="btn-primary"><i class="fas fa-paper-plane"></i> Request Unlock</a>
+      <a href="about.html" class="btn-outline">Learn more</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER (exact copy from index) ── -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo" style="font-size:1.1rem">fc<span>intel</span></div>
+        <p>Trusted experts in financial crime recovery. Bringing what was taken back to light.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <a href="cryptocurrency-recovery.html">Crypto Recovery</a>
+        <a href="account-restoration.html">Account Restoration</a>
+        <a href="device-forensics.html">Device Forensics</a>
+        <a href="digital-extortion-response.html">Extortion Response</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="about.html">About Us</a>
+        <a href="testimonial.html">Testimonials</a>
+        <a href="news-insights.html">News & Insights</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Account</h4>
+        <a href="user/login.html">Login</a>
+        <a href="user/register.html">Register</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="user/password/reset.html">Reset Password</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 Financial Crime Recovery — fcintel. All rights reserved.</span>
+      <span style="display:flex;gap:16px">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<!-- Firebase Auth Script (same as index) -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+
+const app = initializeApp({
+  apiKey: "AIzaSyDLavOembi_2egjQcshysiWqKZOwMka9aI",
+  authDomain: "fcintel-1fa8c.firebaseapp.com",
+  projectId: "fcintel-1fa8c",
+  storageBucket: "fcintel-1fa8c.firebasestorage.app",
+  messagingSenderId: "715533638753",
+  appId: "1:715533638753:web:491d17796c411ecab9de20"
+});
+
+onAuthStateChanged(getAuth(app), (user) => {
+  if (user) {
+    document.getElementById('navLogin').textContent = 'Dashboard';
+    document.getElementById('navLogin').href = 'dashboard.html';
+    document.getElementById('navRegister').textContent = 'Sign Out';
+    document.getElementById('navRegister').addEventListener('click', (e) => {
+      e.preventDefault();
+      signOut(getAuth(app)).then(() => { localStorage.clear(); window.location.reload(); });
+    });
+  }
+});
+</script>
+</body>
+</html>

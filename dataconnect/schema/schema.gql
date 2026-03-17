@@ -1,0 +1,34 @@
+type User @table {
+  email: String!
+  createdAt: Timestamp!
+  displayName: String
+  fcmRegistrationToken: String
+}
+
+type NotificationTopic @table {
+  name: String!
+  createdAt: Timestamp!
+  description: String
+}
+
+type UserSubscription @table(key: ["user", "topic"]) {
+  user: User!
+  topic: NotificationTopic!
+  createdAt: Timestamp!
+}
+
+type Notification @table {
+  title: String!
+  body: String!
+  sentAt: Timestamp!
+  topic: NotificationTopic
+  imageUrl: String
+  linkUrl: String
+}
+
+type UserNotification @table(key: ["user", "notification"]) {
+  user: User!
+  notification: Notification!
+  receivedAt: Timestamp!
+  readAt: Timestamp
+}

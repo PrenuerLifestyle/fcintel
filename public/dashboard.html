@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Preview - fcintel</title>
+    <meta name="description" content="Preview dashboard (testing mode)">
+
+    <!-- Favicon (optional) -->
+    <link rel="shortcut icon" href="/assets/images/logoIcon/favicon.png" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/images/logoIcon/my-logo.png">
+
+    <!-- Fonts & Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- iziToast for notifications -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast@1.4.0/dist/css/iziToast.min.css">
+
+    <!-- Custom Dashboard Styles (same as before) -->
+    <style>
+        :root {
+            --bg:       #080c10;
+            --surface:  #0f1419;
+            --card:     #141920;
+            --border:   rgba(255,255,255,0.07);
+            --primary:  #248acc;
+            --accent:   #46e829;
+            --text:     #e2e8f0;
+            --muted:    #64748b;
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+        }
+        .sidebar {
+            background: #0f1419;
+            border-right: 1px solid var(--border);
+            min-height: 100vh;
+            transition: all 0.3s;
+        }
+        .sidebar .nav-link {
+            color: var(--muted);
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            margin: 0.2rem 0;
+            transition: all 0.2s;
+        }
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            color: #fff;
+            background: rgba(36,138,204,0.15);
+        }
+        .sidebar .nav-link i {
+            width: 1.5rem;
+            font-size: 1.1rem;
+        }
+        .main-content {
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 2rem;
+        }
+        .stat-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            transition: transform 0.2s;
+        }
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+        }
+        .table-custom {
+            color: var(--text);
+        }
+        .table-custom thead th {
+            border-bottom-color: #2d3748;
+            color: var(--muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+        .table-custom td {
+            border-color: #1e2630;
+            vertical-align: middle;
+        }
+        .badge-progress { background: #fbbf24; color: #000; }
+        .badge-recovered { background: #46e829; color: #000; }
+        .badge-pending { background: #248acc; color: #fff; }
+
+        /* Spinner (hidden by default now) */
+        #spinner {
+            background: var(--bg);
+            z-index: 9999;
+        }
+        .spinner-border.text-primary {
+            color: var(--primary) !important;
+        }
+
+        /* Modal Styles (same) */
+        .modal-content {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 1.5rem;
+            color: var(--text);
+        }
+        .modal-header {
+            border-bottom-color: var(--border);
+        }
+        .modal-footer {
+            border-top-color: var(--border);
+        }
+        .form-label {
+            color: var(--muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+        .form-control, .form-select, textarea {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: #fff;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            transition: border-color 0.2s;
+        }
+        .form-control:focus, .form-select:focus, textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(36,138,204,0.25);
+            background: var(--card);
+            color: #fff;
+        }
+        .input-group-text {
+            background: var(--card);
+            border-color: var(--border);
+            color: var(--muted);
+        }
+        .btn-primary {
+            background: var(--primary);
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .btn-primary:hover {
+            background: #1a7ab5;
+            transform: translateY(-2px);
+        }
+        .btn-outline-secondary {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 0.75rem 2rem;
+            border-radius: 2rem;
+            transition: all 0.2s;
+        }
+        .btn-outline-secondary:hover {
+            border-color: rgba(255,255,255,0.2);
+            color: #fff;
+        }
+        .spinner-large {
+            width: 4rem;
+            height: 4rem;
+            border-width: 0.3rem;
+        }
+        .text-accent {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <!-- Spinner (initially hidden) -->
+    <div id="spinner" class="position-fixed top-0 start-0 w-100 vh-100 d-none align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-2 col-md-3 p-0 sidebar">
+                <div class="d-flex flex-column p-3">
+                    <a href="/index.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                        <span class="fs-4 fw-bold">fc<span style="color:var(--primary);">intel</span></span>
+                    </a>
+                    <hr class="text-secondary">
+                    <ul class="nav nav-pills flex-column mb-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link active" aria-current="page">
+                                <i class="bi bi-speedometer2"></i> Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link">
+                                <i class="bi bi-folder"></i> My Cases
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#recoveryModal">
+                                <i class="bi bi-plus-circle"></i> New Recovery
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link" id="signOutBtn">
+                                <i class="bi bi-box-arrow-right"></i> Sign Out
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-10 col-md-9 ms-auto main-content">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom border-secondary">
+                    <h1 class="h2">Dashboard</h1>
+                    <div class="d-flex align-items-center">
+                        <span id="userEmail" class="text-muted me-3">test@example.com (Preview Mode)</span>
+                    </div>
+                </div>
+
+                <!-- Stats Cards (mock data) -->
+                <div class="row g-4 mb-4" id="statsContainer">
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="stat-card">
+                            <h6 class="text-muted text-uppercase small">Total Cases</h6>
+                            <h2 class="text-white" id="totalCases">12</h2>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="stat-card">
+                            <h6 class="text-muted text-uppercase small">Open Cases</h6>
+                            <h2 class="text-white" id="openCases">5</h2>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="stat-card">
+                            <h6 class="text-muted text-uppercase small">Recovered Amount</h6>
+                            <h2 class="text-white" id="recovered">$248,500</h2>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="stat-card">
+                            <h6 class="text-muted text-uppercase small">Success Rate</h6>
+                            <h2 class="text-white" id="successRate">92%</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Cases Table (mock data) -->
+                <div class="stat-card p-3 mt-4">
+                    <h5 class="mb-3">Recent Cases</h5>
+                    <div class="table-responsive">
+                        <table class="table table-custom table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Case ID</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Date Submitted</th>
+                                    <th>Recovered Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody id="casesTable">
+                                <tr>
+                                    <td>#FC101</td>
+                                    <td>Cryptocurrency</td>
+                                    <td><span class="badge badge-progress">In Progress</span></td>
+                                    <td>2025-02-10</td>
+                                    <td>—</td>
+                                </tr>
+                                <tr>
+                                    <td>#FC102</td>
+                                    <td>Account Compromise</td>
+                                    <td><span class="badge badge-recovered">Recovered</span></td>
+                                    <td>2025-01-28</td>
+                                    <td>$12,500</td>
+                                </tr>
+                                <tr>
+                                    <td>#FC103</td>
+                                    <td>Social Media</td>
+                                    <td><span class="badge badge-pending">Pending Review</span></td>
+                                    <td>2025-02-05</td>
+                                    <td>—</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== RECOVERY CONSULTATION MODALS (unchanged) ========== -->
+    <!-- Step 1: Consultation Form Modal -->
+    <div class="modal fade" id="recoveryModal" tabindex="-1" aria-labelledby="recoveryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-white" id="recoveryModalLabel">Start New Recovery Consultation</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="consultationForm">
+                        <div class="mb-3">
+                            <label for="lostAmount" class="form-label">Total amount lost (USD)</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="number" class="form-control" id="lostAmount" placeholder="e.g. 15000" min="1" step="1" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="scamType" class="form-label">Type of scam / loss</label>
+                            <select class="form-select" id="scamType" required>
+                                <option value="" selected disabled>Select one</option>
+                                <option value="crypto">Cryptocurrency investment scam</option>
+                                <option value="account">Account compromise / takeover</option>
+                                <option value="romance">Romance / pig butchering scam</option>
+                                <option value="extortion">Digital extortion / blackmail</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Brief description of what happened</label>
+                            <textarea class="form-control" id="description" rows="3" placeholder="Include dates, platforms, any communication..."></textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <p class="form-label">Have you already contacted law enforcement?</p>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="policeContact" id="policeYes" value="yes">
+                                <label class="form-check-label text-muted" for="policeYes">Yes</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="policeContact" id="policeNo" value="no" checked>
+                                <label class="form-check-label text-muted" for="policeNo">No</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="startEvaluationBtn">Start Evaluation</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 2: Processing Modal -->
+    <div class="modal fade" id="processingModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center p-4">
+                <div class="modal-body">
+                    <div class="spinner-border spinner-large text-primary mb-3" role="status">
+                        <span class="visually-hidden">Processing...</span>
+                    </div>
+                    <h4 class="text-white">Analyzing your case</h4>
+                    <p class="text-muted">Please wait while our AI evaluates the recovery potential...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 3: Result Modal (80% recovery) -->
+    <div class="modal fade" id="resultModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-white">Recovery Estimate</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center p-4">
+                    <i class="fas fa-check-circle text-accent" style="font-size:4rem;"></i>
+                    <h3 class="mt-3 text-white">We can recover <span class="text-accent">80%</span> of your lost funds</h3>
+                    <p class="display-6 fw-bold text-white" id="recoveredAmountDisplay">$0</p>
+                    <p class="text-muted">Based on the information provided, our experts have determined that 80% of your loss is recoverable through our network.</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-primary px-5" id="proceedToFeeBtn">Proceed to Disbursement</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 4: Fee Modal (8% fee) -->
+    <div class="modal fade" id="feeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-white">Disbursement Fee</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center p-4">
+                    <i class="fas fa-hand-holding-usd text-primary" style="font-size:4rem;"></i>
+                    <h4 class="mt-3 text-white">8% fee applies</h4>
+                    <p class="mt-3">To disburse your recovered funds, a one‑time fee of <strong>8%</strong> of the recovered amount is required.</p>
+                    <p class="fs-3 fw-bold text-white" id="feeAmountDisplay">$0</p>
+                    <p class="text-muted small">This covers legal processing, blockchain analysis, and fund transfer.</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-primary px-5" id="confirmFeeBtn">Confirm & Pay</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Toast -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="successToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    ✅ Disbursement initiated! You will receive your funds within 3‑5 business days.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/izitoast@1.4.0/dist/js/iziToast.min.js"></script>
+
+    <script>
+        // Simple script to handle the recovery modals (no Firebase)
+        (function() {
+            // Get modal elements
+            const recoveryModal = new bootstrap.Modal(document.getElementById('recoveryModal'));
+            const processingModal = new bootstrap.Modal(document.getElementById('processingModal'));
+            const resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
+            const feeModal = new bootstrap.Modal(document.getElementById('feeModal'));
+            const successToast = new bootstrap.Toast(document.getElementById('successToast'));
+
+            // Buttons
+            const startEvalBtn = document.getElementById('startEvaluationBtn');
+            const proceedToFeeBtn = document.getElementById('proceedToFeeBtn');
+            const confirmFeeBtn = document.getElementById('confirmFeeBtn');
+
+            // Form fields
+            const lostAmountInput = document.getElementById('lostAmount');
+            const recoveredSpan = document.getElementById('recoveredAmountDisplay');
+            const feeSpan = document.getElementById('feeAmountDisplay');
+
+            // Sign out button (just logs to console in preview mode)
+            document.getElementById('signOutBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                alert('Sign out clicked – no action in preview mode.');
+            });
+
+            let lostAmount = 0, recovered = 0, fee = 0;
+
+            startEvalBtn.addEventListener('click', () => {
+                lostAmount = parseFloat(lostAmountInput.value);
+                if (isNaN(lostAmount) || lostAmount <= 0) {
+                    alert('Please enter a valid amount.');
+                    return;
+                }
+
+                recoveryModal.hide();
+                processingModal.show();
+
+                setTimeout(() => {
+                    processingModal.hide();
+                    recovered = lostAmount * 0.8;
+                    recoveredSpan.innerText = '$' + recovered.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                    resultModal.show();
+                }, 2000);
+            });
+
+            proceedToFeeBtn.addEventListener('click', () => {
+                resultModal.hide();
+                fee = recovered * 0.08;
+                feeSpan.innerText = '$' + fee.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                feeModal.show();
+            });
+
+            confirmFeeBtn.addEventListener('click', () => {
+                feeModal.hide();
+                successToast.show();
+                document.getElementById('consultationForm').reset();
+            });
+        })();
+    </script>
+</body>
+</html>

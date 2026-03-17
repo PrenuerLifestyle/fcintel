@@ -1,0 +1,85 @@
+mutation CreateDemoData @transaction @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users.") {
+  user_insertMany(data: [
+    {
+      id: "550e8400-e29b-41d4-a716-446655440000",
+      email: "user1@example.com",
+      displayName: "Demo User 1",
+      createdAt: "2023-01-01T00:00:00Z"
+    },
+    {
+      id: "550e8400-e29b-41d4-a716-446655440001",
+      email: "user2@example.com",
+      displayName: "Demo User 2",
+      createdAt: "2023-01-02T00:00:00Z"
+    }
+  ])
+  notificationTopic_insertMany(data: [
+    {
+      id: "6a6b1000-c200-4740-b3b0-272e737c35a6",
+      name: "General Announcements",
+      description: "General news and updates",
+      createdAt: "2023-01-01T00:00:00Z"
+    },
+    {
+      id: "7b7c2000-d300-5850-c4c0-383f848d46b7",
+      name: "Product Updates",
+      description: "New features and improvements",
+      createdAt: "2023-01-05T00:00:00Z"
+    }
+  ])
+  notification_insertMany(data: [
+    {
+      id: "8c8d3000-e400-6960-d5d0-494e959e57c8",
+      topicId: "6a6b1000-c200-4740-b3b0-272e737c35a6",
+      title: "Welcome to our app!",
+      body: "Check out our new features.",
+      sentAt: "2023-01-03T10:00:00Z",
+      imageUrl: "https://example.com/welcome.jpg",
+      linkUrl: "https://example.com/welcome"
+    },
+    {
+      id: "9d9e4000-f500-7a70-e6e0-5a5f060f68d9",
+      topicId: "7b7c2000-d300-5850-c4c0-383f848d46b7",
+      title: "Version 2.0 Released!",
+      body: "Exciting new updates are here.",
+      sentAt: "2023-01-06T14:30:00Z",
+      imageUrl: "https://example.com/v2_release.png",
+      linkUrl: "https://example.com/release"
+    }
+  ])
+  userNotification_insertMany(data: [
+    {
+      userId: "550e8400-e29b-41d4-a716-446655440000",
+      notificationId: "8c8d3000-e400-6960-d5d0-494e959e57c8",
+      receivedAt: "2023-01-03T10:05:00Z",
+      readAt: "2023-01-03T10:15:00Z"
+    },
+    {
+      userId: "550e8400-e29b-41d4-a716-446655440001",
+      notificationId: "8c8d3000-e400-6960-d5d0-494e959e57c8",
+      receivedAt: "2023-01-03T10:06:00Z"
+    },
+    {
+      userId: "550e8400-e29b-41d4-a716-446655440000",
+      notificationId: "9d9e4000-f500-7a70-e6e0-5a5f060f68d9",
+      receivedAt: "2023-01-06T14:35:00Z"
+    }
+  ])
+  userSubscription_insertMany(data: [
+    {
+      userId: "550e8400-e29b-41d4-a716-446655440000",
+      topicId: "6a6b1000-c200-4740-b3b0-272e737c35a6",
+      createdAt: "2023-01-01T00:00:00Z"
+    },
+    {
+      userId: "550e8400-e29b-41d4-a716-446655440000",
+      topicId: "7b7c2000-d300-5850-c4c0-383f848d46b7",
+      createdAt: "2023-01-05T00:00:00Z"
+    },
+    {
+      userId: "550e8400-e29b-41d4-a716-446655440001",
+      topicId: "6a6b1000-c200-4740-b3b0-272e737c35a6",
+      createdAt: "2023-01-02T00:00:00Z"
+    }
+  ])
+}

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blackmail & Extortion Response — fcintel</title>
+<meta name="description" content="Facing online blackmail, sextortion, ransomware or digital extortion? Our emergency response team acts fast to protect your identity, preserve evidence and work">
+<link rel="shortcut icon" href="assets/images/logoIcon/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css">
+<style>/* ============================================================
+   SHARED STYLES — fcintel service pages
+   All service pages include this inline
+   ============================================================ */
+
+:root {
+  --bg: #080c10; --surface: #0f1419; --card: #141920;
+  --border: rgba(255,255,255,0.07);
+  --primary: #248acc; --accent: #46e829;
+  --text: #e2e8f0; --muted: #64748b;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; line-height: 1.6; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
+
+/* NAV */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 68px; background: rgba(8,12,16,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+.nav-logo { display: flex; align-items: center; gap: 10px; font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.15rem; color: #fff; }
+.nav-logo span { color: var(--primary); }
+.nav-links { display: flex; align-items: center; gap: 6px; }
+.nav-links a { padding: 7px 14px; border-radius: 6px; font-size: 0.875rem; color: var(--muted); transition: color 0.2s, background 0.2s; }
+.nav-links a:hover { color: #fff; background: rgba(255,255,255,0.05); }
+.nav-actions { display: flex; gap: 10px; }
+.btn-login { padding: 8px 18px; border-radius: 7px; border: 1px solid var(--border); color: var(--muted); font-size: 0.85rem; transition: all 0.2s; }
+.btn-login:hover { border-color: rgba(255,255,255,0.2); color: #fff; }
+.btn-cta { padding: 8px 18px; border-radius: 7px; background: var(--primary); color: #fff; font-size: 0.85rem; font-weight: 600; }
+.nav-toggle { display: none; background: none; border: none; color: #fff; font-size: 1.2rem; cursor: pointer; }
+.mobile-menu { display: none; flex-direction: column; position: fixed; top: 68px; left: 0; right: 0; background: rgba(8,12,16,0.97); padding: 20px; z-index: 999; border-bottom: 1px solid var(--border); }
+.mobile-menu.open { display: flex; }
+.mobile-menu a { padding: 12px 10px; font-size: 0.95rem; color: var(--muted); border-bottom: 1px solid rgba(255,255,255,0.04); }
+
+/* PAGE HERO */
+.page-hero { padding: 130px 40px 80px; background: linear-gradient(180deg, rgba(36,138,204,0.08) 0%, transparent 100%); border-bottom: 1px solid var(--border); }
+.breadcrumb { font-size: 0.75rem; color: var(--muted); margin-bottom: 18px; }
+.breadcrumb a { color: var(--primary); }
+.breadcrumb span { margin: 0 8px; }
+.page-badge { display: inline-block; background: rgba(36,138,204,0.1); border: 1px solid rgba(36,138,204,0.25); color: var(--primary); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 14px; border-radius: 20px; margin-bottom: 16px; }
+h1 { font-family: 'Outfit', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 18px; }
+h1 em { font-style: normal; color: var(--primary); }
+.hero-sub { font-size: 1rem; color: var(--muted); max-width: 560px; line-height: 1.75; margin-bottom: 32px; }
+.hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+.btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--primary); color: #fff; padding: 13px 26px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; transition: background 0.2s; }
+.btn-primary:hover { background: #1a7ab5; }
+.btn-outline { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border); color: var(--muted); padding: 13px 26px; border-radius: 8px; font-size: 0.9rem; transition: all 0.2s; }
+.btn-outline:hover { border-color: rgba(255,255,255,0.2); color: #fff; }
+
+/* CONTENT SECTIONS */
+section { padding: 80px 40px; }
+.container { max-width: 1100px; margin: 0 auto; }
+.section-label { color: var(--primary); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 10px; display: block; }
+h2 { font-family: 'Outfit', sans-serif; font-size: clamp(1.6rem, 2.5vw, 2.2rem); font-weight: 800; letter-spacing: -0.025em; margin-bottom: 14px; }
+.section-sub { color: var(--muted); font-size: 0.95rem; max-width: 520px; line-height: 1.7; margin-bottom: 48px; }
+
+/* CARDS */
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 26px; transition: border-color 0.3s, transform 0.2s; }
+.card:hover { border-color: rgba(36,138,204,0.3); transform: translateY(-3px); }
+.card-icon { width: 46px; height: 46px; border-radius: 11px; background: rgba(36,138,204,0.12); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--primary); margin-bottom: 16px; }
+.card h3 { font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; }
+.card p { font-size: 0.82rem; color: var(--muted); line-height: 1.65; }
+
+/* PROCESS STEPS */
+.process { display: flex; flex-direction: column; gap: 0; }
+.process-step { display: flex; gap: 24px; padding: 28px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+.process-step:last-child { border-bottom: none; }
+.step-num-circle { width: 44px; height: 44px; border-radius: 50%; background: rgba(36,138,204,0.12); border: 1px solid rgba(36,138,204,0.3); display: flex; align-items: center; justify-content: center; font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 0.9rem; color: var(--primary); flex-shrink: 0; }
+.process-step h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 5px; }
+.process-step p { font-size: 0.83rem; color: var(--muted); line-height: 1.6; }
+
+/* FAQ */
+.faq { display: flex; flex-direction: column; gap: 10px; }
+.faq-item { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.faq-q { padding: 16px 20px; font-size: 0.9rem; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+.faq-q:hover { background: rgba(255,255,255,0.02); }
+.faq-a { padding: 0 20px; max-height: 0; overflow: hidden; transition: max-height 0.3s, padding 0.3s; font-size: 0.83rem; color: var(--muted); line-height: 1.7; }
+.faq-item.open .faq-a { max-height: 200px; padding: 0 20px 16px; }
+.faq-item.open .faq-q i { transform: rotate(180deg); }
+.faq-q i { transition: transform 0.3s; color: var(--muted); }
+
+/* CTA BANNER */
+.cta-banner { background: linear-gradient(135deg, rgba(36,138,204,0.12), rgba(70,232,41,0.06)); border: 1px solid rgba(36,138,204,0.2); border-radius: 16px; padding: 48px 40px; text-align: center; }
+.cta-banner h2 { font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 12px; }
+.cta-banner p { color: var(--muted); margin-bottom: 28px; }
+
+/* FOOTER */
+footer { background: var(--surface); border-top: 1px solid var(--border); padding: 56px 40px 28px; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
+.footer-brand p { font-size: 0.82rem; color: var(--muted); margin-top: 10px; max-width: 240px; line-height: 1.7; }
+.footer-col h4 { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 14px; }
+.footer-col a { display: block; font-size: 0.82rem; color: var(--muted); margin-bottom: 8px; transition: color 0.2s; }
+.footer-col a:hover { color: #fff; }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--muted); flex-wrap: wrap; gap: 10px; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  nav { padding: 0 20px; }
+  .nav-links, .nav-actions { display: none; }
+  .nav-toggle { display: block; }
+  .page-hero, section { padding-left: 20px; padding-right: 20px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .footer-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">fc<span>intel</span></a>
+  <div class="nav-links">
+    <a href="about.html">About</a>
+    <a href="index.html#services">Services</a>
+    <a href="testimonial.html">Testimonials</a>
+    <a href="news-insights.html">News</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div class="nav-actions">
+    <a href="user/login.html" class="btn-login" id="navLogin">Login</a>
+    <a href="user/register.html" class="btn-cta" id="navRegister">Get Started</a>
+  </div>
+  <button class="nav-toggle" onclick="document.querySelector('.mobile-menu').classList.toggle('open')">&#9776;</button>
+</nav>
+<div class="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="index.html#services">Services</a>
+  <a href="contact.html">Contact</a>
+  <a href="user/login.html" style="color:var(--primary);font-weight:600">Login</a>
+  <a href="user/register.html" style="color:var(--accent);font-weight:600">Get Started</a>
+</div>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><a href="index.html#services">Services</a><span>/</span>Blackmail / Extortion</div>
+    <div class="page-badge"><i class="fas fa-lock" style="margin-right:6px"></i>Emergency Response</div>
+    <h1>Stop the <em>Blackmail. Reclaim Control.</em></h1>
+    <p class="hero-sub">Facing online blackmail, sextortion, ransomware or digital extortion? Our emergency response team acts fast to protect your identity, preserve evidence and work with law enforcement to shut it down.</p>
+    <div class="hero-btns">
+      <a href="contact.html" class="btn-primary"><i class="fas fa-paper-plane"></i> Submit Your Case</a>
+      <a href="index.html#services" class="btn-outline"><i class="fas fa-arrow-left"></i> All Services</a>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT WE DO -->
+<section>
+  <div class="container">
+    <span class="section-label">What We Do</span>
+    <h2>Our Capabilities</h2>
+    <p class="section-sub">A comprehensive approach to every case, backed by certified investigators and the latest forensic tools.</p>
+    <div class="cards-grid">
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-exclamation-triangle"></i></div>
+          <h3>Sextortion Response</h3>
+          <p>Immediate response to intimate image threats — evidence preservation, platform reporting and law enforcement coordination.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-virus"></i></div>
+          <h3>Ransomware Recovery</h3>
+          <p>Technical response to ransomware attacks — decryption, data recovery and attacker tracing without paying the ransom.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-user-secret"></i></div>
+          <h3>Identity Extortion</h3>
+          <p>Handling threats involving personal data, doxxing, reputation attacks and personal information exposure demands.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-building"></i></div>
+          <h3>Corporate Extortion</h3>
+          <p>Enterprise-grade response for business email compromise, data theft extortion and corporate reputation threats.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-gavel"></i></div>
+          <h3>Legal Coordination</h3>
+          <p>Working directly with cyber crime units, solicitors and prosecutors to build cases against extortionists.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-eye-slash"></i></div>
+          <h3>Evidence Preservation</h3>
+          <p>Forensic preservation of all extortion communications in legally admissible format before any platform reporting.</p>
+        </div></div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section style="background:var(--surface)">
+  <div class="container">
+    <span class="section-label">Our Process</span>
+    <h2>How It Works</h2>
+    <p class="section-sub">A structured, transparent process from the moment you contact us to resolution.</p>
+    <div class="process">
+        <div class="process-step">
+          <div class="step-num-circle">01</div>
+          <div><h3>Do Not Pay — Contact Us First</h3><p>Paying extortionists rarely stops the demands. Contact us before any payment. We assess your situation confidentially within the hour.</p></div>
+        </div>
+        <div class="process-step">
+          <div class="step-num-circle">02</div>
+          <div><h3>Evidence Preservation</h3><p>We forensically preserve all communications, threats and digital evidence in a court-admissible format before anything is reported or deleted.</p></div>
+        </div>
+        <div class="process-step">
+          <div class="step-num-circle">03</div>
+          <div><h3>Attacker Identification</h3><p>OSINT and digital forensics are used to identify and locate the extortionist — critical for law enforcement action.</p></div>
+        </div>
+        <div class="process-step">
+          <div class="step-num-circle">04</div>
+          <div><h3>Takedown & Legal Action</h3><p>We coordinate platform takedowns, law enforcement reports and legal action while providing you ongoing protection.</p></div>
+        </div></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="container">
+    <span class="section-label">FAQ</span>
+    <h2>Common Questions</h2>
+    <p class="section-sub" style="margin-bottom:36px">Everything you need to know before getting started.</p>
+    <div class="faq" style="max-width:720px">
+        <div class="faq-item">
+          <div class="faq-q">Should I pay the ransom or comply with demands? <i class="fas fa-chevron-down"></i></div>
+          <div class="faq-a">Almost never. Payment emboldens extortionists and rarely ends the demands. Contact us first — we can often resolve the situation without payment.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Will my information be kept confidential? <i class="fas fa-chevron-down"></i></div>
+          <div class="faq-a">Absolutely. All extortion cases are handled with strict confidentiality. We never share case details without your explicit consent.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Can the extortionist be arrested? <i class="fas fa-chevron-down"></i></div>
+          <div class="faq-a">Yes — many of our cases have resulted in successful prosecutions. We work directly with cybercrime units in multiple countries.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">What if the material has already been shared? <i class="fas fa-chevron-down"></i></div>
+          <div class="faq-a">We can coordinate emergency takedowns across platforms and work to minimize the spread even after initial posting.</div>
+        </div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="padding-top:0">
+  <div class="container">
+    <div class="cta-banner">
+      <h2>Emergency? We Respond Within the Hour.</h2>
+      <p>Blackmail is a crime. You have more options than you think. Contact us confidentially right now.</p>
+      <a href="contact.html" class="btn-primary" style="margin:0 auto"><i class="fas fa-paper-plane"></i> Submit Your Case — Free Consultation</a>
+    </div>
+  </div>
+</section>
+
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo">fc<span>intel</span></div>
+        <p>Trusted experts in financial crime recovery. Bringing what was taken back to light.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <a href="cryptocurrency-recovery.html">Crypto Recovery</a>
+        <a href="account-restoration.html">Account Restoration</a>
+        <a href="device-forensics.html">Device Forensics</a>
+        <a href="digital-extortion-response.html">Extortion Response</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="about.html">About Us</a>
+        <a href="testimonial.html">Testimonials</a>
+        <a href="news-insights.html">News & Insights</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Account</h4>
+        <a href="user/login.html">Login</a>
+        <a href="user/register.html">Register</a>
+        <a href="dashboard.html">Dashboard</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2024 fcintel Financial Crime Recovery. All rights reserved.</span>
+      <span style="display:flex;gap:16px"><a href="#">Privacy</a><a href="#">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script>
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click',()=>q.closest('.faq-item').classList.toggle('open'));
+});
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+const app = initializeApp({apiKey:"AIzaSyDLavOembi_2egjQcshysiWqKZOwMka9aI",authDomain:"fcintel-1fa8c.firebaseapp.com",projectId:"fcintel-1fa8c",storageBucket:"fcintel-1fa8c.firebasestorage.app",messagingSenderId:"715533638753",appId:"1:715533638753:web:491d17796c411ecab9de20"});
+onAuthStateChanged(getAuth(app),(user)=>{
+  if(user){
+    document.getElementById('navLogin').textContent='Dashboard';
+    document.getElementById('navLogin').href='dashboard.html';
+    document.getElementById('navRegister').textContent='Sign Out';
+    document.getElementById('navRegister').onclick=(e)=>{e.preventDefault();signOut(getAuth(app)).then(()=>{localStorage.clear();location.reload();});};
+  }
+});
+</script>
+</body>
+</html>

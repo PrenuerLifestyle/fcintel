@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - fcintel</title>
+    <meta name="description" content="Access your financial crime recovery dashboard">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/assets/images/logoIcon/favicon.png" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/images/logoIcon/my-logo.png">
+
+    <!-- Fonts & Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <!-- Bootstrap 5 (for quick layout) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- iziToast for notifications -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast@1.4.0/dist/css/iziToast.min.css">
+
+    <!-- Custom Styles (matching fcintel theme) -->
+    <style>
+        :root {
+            --bg:       #080c10;
+            --surface:  #0f1419;
+            --card:     #141920;
+            --border:   rgba(255,255,255,0.07);
+            --primary:  #248acc;
+            --accent:   #46e829;
+            --text:     #e2e8f0;
+            --muted:    #64748b;
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .login-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 2.5rem 2rem;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        .login-card h1 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 0.25rem;
+        }
+        .login-card h1 span {
+            color: var(--primary);
+        }
+        .login-card .subhead {
+            color: var(--muted);
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+        .form-label {
+            color: var(--muted);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+        .form-control {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: #fff;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            transition: border-color 0.2s;
+        }
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(36,138,204,0.25);
+            background: var(--card);
+            color: #fff;
+        }
+        .form-check-input {
+            background-color: var(--card);
+            border-color: var(--border);
+        }
+        .form-check-input:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        .form-check-label {
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+        .btn-primary {
+            background: var(--primary);
+            border: none;
+            padding: 0.75rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            width: 100%;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .btn-primary:hover {
+            background: #1a7ab5;
+            transform: translateY(-2px);
+        }
+        .btn-link {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+        .btn-link:hover {
+            color: #fff;
+        }
+        .footer-links {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .signup-link {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .signup-link:hover {
+            text-decoration: underline;
+        }
+        /* Spinner overlay */
+        #spinner {
+            background: rgba(8,12,16,0.9);
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <!-- Spinner (hidden by default) -->
+    <div id="spinner" class="position-fixed top-0 start-0 w-100 vh-100 d-none align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <div class="login-card">
+        <div class="text-center">
+            <h1>fc<span>intel</span></h1>
+            <div class="subhead">Financial Crime Intelligence</div>
+        </div>
+
+        <form id="loginForm">
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="your@email.com" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="••••••••" required>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe">Remember me</label>
+                </div>
+                <a href="forgot-password.html" class="btn-link">Forgot Password?</a>
+            </div>
+            <button type="submit" class="btn btn-primary" id="signInBtn">Sign In</button>
+        </form>
+
+        <div class="footer-links">
+            <span class="text-muted">Don't have an Account?</span>
+            <a href="register.html" class="signup-link">Sign Up</a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/izitoast@1.4.0/dist/js/iziToast.min.js"></script>
+
+    <!-- Firebase Modular -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDLavOembi_2egjQcshysiWqKZOwMka9aI",
+            authDomain: "fcintel-1fa8c.firebaseapp.com",
+            projectId: "fcintel-1fa8c",
+            storageBucket: "fcintel-1fa8c.appspot.com",
+            messagingSenderId: "715533638753",
+            appId: "1:715533638753:web:491d17796c411ecab9de20"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // DOM elements
+        const spinner = document.getElementById('spinner');
+        const loginForm = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const rememberMeCheck = document.getElementById('rememberMe');
+        const signInBtn = document.getElementById('signInBtn');
+
+        // Helper: show toast
+        function showToast(type, message) {
+            iziToast[type]({
+                title: type === 'error' ? 'Error' : 'Success',
+                message: message,
+                position: 'topRight',
+                timeout: 3000
+            });
+        }
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (!email || !password) {
+                showToast('error', 'Please fill in both fields.');
+                return;
+            }
+
+            // Show spinner
+            spinner.classList.remove('d-none');
+            spinner.classList.add('d-flex');
+
+            try {
+                // Set persistence based on "Remember me"
+                const persistence = rememberMeCheck.checked ? browserLocalPersistence : browserSessionPersistence;
+                await setPersistence(auth, persistence);
+
+                // Sign in
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                showToast('success', 'Login successful! Redirecting...');
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+            } catch (error) {
+                console.error('Login error:', error);
+                let errorMessage = 'Login failed. Please check your credentials.';
+                if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                    errorMessage = 'Invalid email or password.';
+                } else if (error.code === 'auth/too-many-requests') {
+                    errorMessage = 'Too many failed attempts. Try again later.';
+                }
+                showToast('error', errorMessage);
+            } finally {
+                // Hide spinner
+                spinner.classList.add('d-none');
+                spinner.classList.remove('d-flex');
+            }
+        });
+    </script>
+</body>
+</html>

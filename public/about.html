@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About Us — fcintel</title>
+<meta name="description" content="Learn about fcintel: our mission, our team, and our commitment to fighting financial crime and recovering what's yours.">
+<link rel="shortcut icon" href="assets/images/logoIcon/favicon.png">
+<link rel="apple-touch-icon" href="assets/images/logoIcon/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css">
+<style>
+:root {
+  --bg:       #080c10;
+  --surface:  #0f1419;
+  --card:     #141920;
+  --border:   rgba(255,255,255,0.07);
+  --primary:  #248acc;
+  --accent:   #46e829;
+  --text:     #e2e8f0;
+  --muted:    #64748b;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; }
+
+/* ── NAVBAR ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 68px;
+  background: rgba(8,12,16,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.3s;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800; font-size: 1.15rem; color: #fff;
+}
+.nav-logo img { height: 32px; }
+.nav-logo span { color: var(--primary); }
+.nav-links { display: flex; align-items: center; gap: 6px; }
+.nav-links a {
+  padding: 7px 14px; border-radius: 6px;
+  font-size: 0.875rem; color: var(--muted);
+  transition: color 0.2s, background 0.2s;
+  position: relative;
+}
+.nav-links a:hover { color: #fff; background: rgba(255,255,255,0.05); }
+.nav-links .has-dropdown { cursor: pointer; }
+.dropdown {
+  display: none; position: absolute; top: calc(100% + 8px); left: 0;
+  background: #161c24; border: 1px solid var(--border);
+  border-radius: 10px; padding: 8px; min-width: 220px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+}
+.has-dropdown:hover .dropdown { display: block; }
+.dropdown a {
+  display: block; padding: 9px 12px; border-radius: 6px;
+  font-size: 0.82rem; color: var(--muted);
+  transition: all 0.15s;
+}
+.dropdown a:hover { color: #fff; background: rgba(255,255,255,0.05); }
+.nav-actions { display: flex; gap: 10px; align-items: center; }
+.btn-login {
+  padding: 8px 18px; border-radius: 7px;
+  border: 1px solid var(--border);
+  color: var(--muted); font-size: 0.85rem;
+  transition: all 0.2s;
+}
+.btn-login:hover { border-color: rgba(255,255,255,0.2); color: #fff; }
+.btn-cta {
+  padding: 8px 18px; border-radius: 7px;
+  background: var(--primary); color: #fff;
+  font-size: 0.85rem; font-weight: 600;
+  transition: background 0.2s;
+}
+.btn-cta:hover { background: #1a7ab5; }
+.nav-toggle {
+  display: none; background: none; border: none;
+  color: #fff; font-size: 1.2rem; cursor: pointer;
+}
+
+/* ── HERO (about) ── */
+.hero-about {
+  min-height: 60vh;
+  display: flex; align-items: center;
+  padding: 120px 40px 80px;
+  position: relative; overflow: hidden;
+  background: var(--surface);
+}
+.hero-about-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 30% 30%, rgba(36,138,204,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 80% 70%, rgba(70,232,41,0.04) 0%, transparent 60%);
+}
+.hero-about-content {
+  position: relative; z-index: 1;
+  max-width: 720px;
+  animation: fadeUp 0.8s ease both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-about h1 {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(2.6rem, 5vw, 4rem);
+  font-weight: 900; line-height: 1.1;
+  letter-spacing: -0.02em; margin-bottom: 22px;
+}
+.hero-about h1 em { font-style: normal; color: var(--primary); }
+.hero-about p {
+  font-size: 1.1rem; color: var(--muted); max-width: 560px;
+  line-height: 1.7;
+}
+
+/* ── SECTION COMMONS ── */
+section { padding: 96px 40px; }
+.container { max-width: 1100px; margin: 0 auto; }
+.section-label {
+  display: inline-block;
+  color: var(--primary); font-size: 0.72rem;
+  text-transform: uppercase; letter-spacing: 0.15em;
+  margin-bottom: 10px;
+}
+h2 {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 800; line-height: 1.15;
+  letter-spacing: -0.025em; margin-bottom: 14px;
+}
+.section-sub { color: var(--muted); font-size: 1rem; max-width: 520px; line-height: 1.7; }
+
+/* ── MISSION / VALUES ── */
+.mission-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px; margin-top: 56px;
+}
+.mission-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px; padding: 32px 26px;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.mission-card:hover {
+  border-color: rgba(36,138,204,0.35);
+  transform: translateY(-4px);
+}
+.mission-icon {
+  width: 52px; height: 52px; border-radius: 12px;
+  background: rgba(36,138,204,0.12);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; color: var(--primary); margin-bottom: 18px;
+}
+.mission-card h3 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.1rem; font-weight: 700; margin-bottom: 12px;
+}
+.mission-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+
+/* ── TEAM ── */
+#team { background: var(--surface); }
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 28px; margin-top: 56px;
+}
+.team-member {
+  text-align: center;
+}
+.team-avatar {
+  width: 120px; height: 120px; border-radius: 50%;
+  margin: 0 auto 16px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.2rem; font-weight: 700; color: #fff;
+  border: 2px solid rgba(255,255,255,0.1);
+}
+.team-member h4 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+.team-member p { font-size: 0.8rem; color: var(--muted); }
+
+/* ── STATS ── */
+.stats-grid {
+  display: flex; flex-wrap: wrap; justify-content: space-between;
+  gap: 30px; margin-top: 56px;
+  padding: 40px 30px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+.stat-item { text-align: center; flex: 1 1 140px; }
+.stat-number {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.2rem; font-weight: 800; color: #fff;
+  line-height: 1.2;
+}
+.stat-number.green { color: var(--accent); }
+.stat-number.blue { color: var(--primary); }
+.stat-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* ── CTA ── */
+.cta-section {
+  background: linear-gradient(135deg, rgba(36,138,204,0.12) 0%, rgba(70,232,41,0.06) 100%);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+.cta-section h2 { font-size: clamp(1.8rem, 3vw, 2.4rem); margin-bottom: 14px; }
+.cta-section p { color: var(--muted); font-size: 1rem; margin-bottom: 32px; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 60px 40px 32px;
+}
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+.footer-brand p { font-size: 0.83rem; color: var(--muted); line-height: 1.7; margin-top: 12px; max-width: 260px; }
+.footer-col h4 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 16px; }
+.footer-col a { display: block; font-size: 0.83rem; color: var(--muted); margin-bottom: 9px; transition: color 0.2s; }
+.footer-col a:hover { color: #fff; }
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 24px; border-top: 1px solid var(--border);
+  font-size: 0.78rem; color: var(--muted); flex-wrap: wrap; gap: 10px;
+}
+
+/* ── MOBILE NAV ── */
+.mobile-menu {
+  display: none; flex-direction: column;
+  position: fixed; top: 68px; left: 0; right: 0;
+  background: rgba(8,12,16,0.97); backdrop-filter: blur(12px);
+  padding: 20px; z-index: 999;
+  border-bottom: 1px solid var(--border);
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  padding: 12px 10px; font-size: 0.95rem; color: var(--muted);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: color 0.2s;
+}
+.mobile-menu a:hover { color: #fff; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  nav { padding: 0 20px; }
+  .nav-links, .nav-actions { display: none; }
+  .nav-toggle { display: block; }
+  .hero-about { padding: 100px 20px 60px; }
+  section { padding: 64px 20px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .footer-grid { grid-template-columns: 1fr; }
+  .stats-grid { flex-direction: column; align-items: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV (identical to index) ── -->
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/images/logoIcon/logo.png" alt="fcintel" onerror="this.style.display='none'">
+    fc<span>intel</span>
+  </a>
+
+  <div class="nav-links">
+    <a href="about.html">About</a>
+    <a href="index.html#services" class="has-dropdown" style="position:relative">
+      Services
+      <div class="dropdown">
+        <a href="cryptocurrency-recovery.html"><i class="fab fa-bitcoin" style="width:18px"></i> Cryptocurrency Recovery</a>
+        <a href="account-restoration.html"><i class="fas fa-user-shield" style="width:18px"></i> Account Restoration</a>
+        <a href="social-media-intrusion-recovery.html"><i class="fas fa-share-alt" style="width:18px"></i> Social Media Recovery</a>
+        <a href="device-forensics.html"><i class="fas fa-mobile-alt" style="width:18px"></i> Device Forensics</a>
+        <a href="digital-extortion-response.html"><i class="fas fa-lock" style="width:18px"></i> Digital Extortion</a>
+        <a href="account-compromise-recovery.html"><i class="fas fa-key" style="width:18px"></i> Account Compromise</a>
+      </div>
+    </a>
+    <a href="testimonial.html">Testimonials</a>
+    <a href="news-insights.html">News</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <div class="nav-actions">
+    <a href="user/login.html" class="btn-login" id="navLogin">Login</a>
+    <a href="user/register.html" class="btn-cta" id="navRegister">Get Started</a>
+  </div>
+
+  <button class="nav-toggle" onclick="document.querySelector('.mobile-menu').classList.toggle('open')">
+    <i class="fas fa-bars"></i>
+  </button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu">
+  <a href="about.html">About</a>
+  <a href="cryptocurrency-recovery.html">Cryptocurrency Recovery</a>
+  <a href="account-restoration.html">Account Restoration</a>
+  <a href="social-media-intrusion-recovery.html">Social Media Recovery</a>
+  <a href="device-forensics.html">Device Forensics</a>
+  <a href="digital-extortion-response.html">Digital Extortion</a>
+  <a href="testimonial.html">Testimonials</a>
+  <a href="news-insights.html">News & Insights</a>
+  <a href="contact.html">Contact</a>
+  <a href="user/login.html" style="color:var(--primary);font-weight:600">Login</a>
+  <a href="user/register.html" style="color:var(--accent);font-weight:600">Get Started</a>
+</div>
+
+<!-- ── HERO (about) ── -->
+<section class="hero-about">
+  <div class="hero-about-bg"></div>
+  <div class="hero-about-content container">
+    <h1>We Are <em>fcintel</em></h1>
+    <p>A dedicated team of financial crime investigators, forensic analysts, and legal experts united by a single mission: to recover what was taken from you and bring perpetrators to justice.</p>
+  </div>
+</section>
+
+<!-- ── MISSION & VALUES ── -->
+<section>
+  <div class="container">
+    <div class="section-label">Our Foundation</div>
+    <h2>Mission & Core Values</h2>
+    <p class="section-sub">Integrity, transparency, and relentless pursuit of results guide everything we do.</p>
+
+    <div class="mission-grid">
+      <div class="mission-card">
+        <div class="mission-icon"><i class="fas fa-bullseye"></i></div>
+        <h3>Mission</h3>
+        <p>To provide world-class asset recovery and investigative services to victims of financial crime, restoring not just funds but peace of mind.</p>
+      </div>
+      <div class="mission-card">
+        <div class="mission-icon"><i class="fas fa-handshake"></i></div>
+        <h3>Integrity</h3>
+        <p>We operate with absolute honesty, keeping clients informed at every stage and maintaining strict confidentiality.</p>
+      </div>
+      <div class="mission-card">
+        <div class="mission-icon"><i class="fas fa-lightbulb"></i></div>
+        <h3>Innovation</h3>
+        <p>Using cutting‑edge forensic tools and blockchain analytics to trace assets that others cannot.</p>
+      </div>
+      <div class="mission-card">
+        <div class="mission-icon"><i class="fas fa-users"></i></div>
+        <h3>Collaboration</h3>
+        <p>We work hand‑in‑hand with law enforcement, legal counsel, and financial institutions worldwide.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS ── -->
+<section style="padding-top:0">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number blue">$48M+</div>
+        <div class="stat-label">Recovered</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number green">3,200+</div>
+        <div class="stat-label">Cases Resolved</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">40+</div>
+        <div class="stat-label">Countries</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number blue">97%</div>
+        <div class="stat-label">Success Rate</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TEAM ── -->
+<section id="team">
+  <div class="container">
+    <div class="section-label">The People Behind the Mission</div>
+    <h2>Leadership & Expertise</h2>
+    <p class="section-sub">Our team brings decades of combined experience in cyber investigations, financial forensics, and legal recovery.</p>
+
+    <div class="team-grid">
+      <div class="team-member">
+        <div class="team-avatar">JD</div>
+        <h4>Jonathan Davies</h4>
+        <p>Founder & Lead Investigator, ex‑FBI cybercrime unit</p>
+      </div>
+      <div class="team-member">
+        <div class="team-avatar">MC</div>
+        <h4>Maya Chen</h4>
+        <p>Head of Crypto Forensics, blockchain analyst since 2013</p>
+      </div>
+      <div class="team-member">
+        <div class="team-avatar">RK</div>
+        <h4>Robert Keller</h4>
+        <p>Director of Legal Affairs, former prosecutor</p>
+      </div>
+      <div class="team-member">
+        <div class="team-avatar">SV</div>
+        <h4>Sophia Voss</h4>
+        <p>Senior Digital Forensics Examiner, certified in mobile & cloud</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-section">
+  <div class="container">
+    <h2>Ready to Start Your Recovery?</h2>
+    <p>Our team is ready to listen. Free initial consultation — no obligation.</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <a href="contact.html" class="btn-primary"><i class="fas fa-paper-plane"></i> Submit Your Case</a>
+      <a href="index.html#services" class="btn-outline">Explore Services</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER (identical to index) ── -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo" style="font-size:1.1rem">fc<span>intel</span></div>
+        <p>Trusted experts in financial crime recovery. Bringing what was taken back to light.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <a href="cryptocurrency-recovery.html">Crypto Recovery</a>
+        <a href="account-restoration.html">Account Restoration</a>
+        <a href="device-forensics.html">Device Forensics</a>
+        <a href="digital-extortion-response.html">Extortion Response</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="about.html">About Us</a>
+        <a href="testimonial.html">Testimonials</a>
+        <a href="news-insights.html">News & Insights</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Account</h4>
+        <a href="user/login.html">Login</a>
+        <a href="user/register.html">Register</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="user/password/reset.html">Reset Password</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 Financial Crime Recovery — fcintel. All rights reserved.</span>
+      <span style="display:flex;gap:16px">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+
+const app = initializeApp({
+  apiKey: "AIzaSyDLavOembi_2egjQcshysiWqKZOwMka9aI",
+  authDomain: "fcintel-1fa8c.firebaseapp.com",
+  projectId: "fcintel-1fa8c",
+  storageBucket: "fcintel-1fa8c.firebasestorage.app",
+  messagingSenderId: "715533638753",
+  appId: "1:715533638753:web:491d17796c411ecab9de20"
+});
+
+onAuthStateChanged(getAuth(app), (user) => {
+  if (user) {
+    document.getElementById('navLogin').textContent = 'Dashboard';
+    document.getElementById('navLogin').href = 'dashboard.html';
+    document.getElementById('navRegister').textContent = 'Sign Out';
+    document.getElementById('navRegister').addEventListener('click', (e) => {
+      e.preventDefault();
+      signOut(getAuth(app)).then(() => { localStorage.clear(); window.location.reload(); });
+    });
+  }
+});
+</script>
+</body>
+</html>

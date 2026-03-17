@@ -1,0 +1,45 @@
+mutation CreateUserWithEmail($email: String!, $displayName: String) @auth(level: USER, insecureReason: "Creating a user is a standard operation for logged-in users, and their `auth.uid` is implicitly linked, even if not explicitly in the data payload. However, since `auth.uid` is not referenced in the `data` for this mutation, an insecureReason is required.") {
+  user_insert(
+    data: {
+      email: $email,
+      displayName: $displayName,
+      createdAt_expr: "request.time",
+      id_expr: "uuidV4()"
+    }
+  )
+}
+
+query GetMyNotifications @auth(level: USER) {
+  user(key: {id_expr: "auth.uid"}) {
+    userNotifications_on_user {
+      readAt
+      receivedAt
+      notification {
+        title
+        body
+        sentAt
+        imageUrl
+        linkUrl
+      }
+    }
+  }
+}
+
+mutation SubscribeToTopic($topicId: UUID!) @auth(level: USER) {
+  userSubscription_insert(
+    data: {
+      userId_expr: "auth.uid",
+      topicId: $topicId,
+      createdAt_expr: "request.time"
+    }
+  )
+}
+
+query ListAllNotificationTopics @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public, as it only retrieves public information about notification topics.") {
+  notificationTopics {
+    id
+    name
+    description
+    createdAt
+  }
+}
